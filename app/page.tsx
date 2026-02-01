@@ -44,7 +44,7 @@ export default function Dashboard() {
           q = query(collection(db, 'mockups'), where('ownerId', '==', user.uid));
         }
         const snapshot = await getDocs(q);
-        const fetchedMockups = snapshot.docs.map(d => ({ id: d.id, ...d.data() })) as Mockup[];
+        const fetchedMockups = snapshot.docs.map(d => ({ id: d.id, ...(d.data() as any) })) as Mockup[];
         // Sort client-side if orderBy wasn't used
         fetchedMockups.sort((a, b) => {
           const aTime = a.updatedAt?.toDate?.()?.getTime() || 0;
