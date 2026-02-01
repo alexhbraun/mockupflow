@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
-import { useParams, useSearchParams } from '@/lib/router';
+import { useParams, useSearchParams } from 'next/navigation';
 import { ChatInterface } from '@/components/ChatInterface';
 import { Mockup } from '@/lib/types';
 import { doc, getDoc } from 'firebase/firestore';
