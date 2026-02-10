@@ -47,8 +47,8 @@ export const Editor: React.FC<EditorProps> = ({ initialMockup }) => {
                         <h1 className="font-bold text-sm text-slate-900 leading-none mb-1">{currentMockup.name}</h1>
                         <div className="flex items-center gap-1.5">
                             <span className={`w-1.5 h-1.5 rounded-full ${isDirty ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'}`} />
-                            <span className={`text-[10px] font-bold uppercase tracking-wider ${isDirty ? 'text-amber-600' : 'text-slate-400'}`}>
-                                {isDirty ? 'Unsaved Changes' : 'All Changes Saved'}
+                            <span className={`text-[10px] font-bold uppercase tracking-widest ${isDirty ? 'text-amber-600' : 'text-emerald-600'}`}>
+                                {isDirty ? 'Unsaved Changes' : 'v2.2-STABLE - ONLINE'}
                             </span>
                         </div>
                     </div>
@@ -71,21 +71,29 @@ export const Editor: React.FC<EditorProps> = ({ initialMockup }) => {
             {/* Main Workspace */}
             <div className="flex-1 flex overflow-hidden">
                 {/* Left Panel: Steps */}
-                <aside className="w-[300px] min-w-[300px] max-w-[300px] bg-white border-r border-slate-200/60 flex flex-col shrink-0 shadow-[4px_0_24px_-12px_rgba(0,0,0,0.05)] z-40">
+                <aside 
+                    className="bg-white border-r border-slate-200/60 flex flex-col shrink-0 shadow-[4px_0_24px_-12px_rgba(0,0,0,0.05)] z-40"
+                    style={{ width: '300px', minWidth: '300px', maxWidth: '300px' }}
+                >
                     <div className="flex-1 overflow-y-auto no-scrollbar">
                         <LeftPanel />
                     </div>
                 </aside>
 
                 {/* Center: Canvas */}
-                <main className="flex-1 bg-slate-100/50 relative flex justify-center items-center p-6 lg:p-12 overflow-hidden">
+                <main 
+                    className="flex-1 bg-slate-100/50 relative flex justify-center items-center p-6 lg:p-12 overflow-hidden"
+                    style={{ flex: '1 1 0%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                >
                     {/* Device Frame Wrapper */}
-                    <div className="relative h-full w-full flex items-center justify-center animate-in zoom-in-95 duration-500 max-h-[85vh]">
-                        {/* Apple iPhone 15 Pro Style Frame - Using robust aspect ratio with inline fallback for production stability */}
-                        {/* Deployment Check: v2.1.2-stable */}
+                    <div 
+                        className="relative h-full w-full flex items-center justify-center animate-in zoom-in-95 duration-500 max-h-[85vh]"
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    >
+                        {/* Apple iPhone 15 Pro Style Frame - Hardened Layout */}
                         <div 
-                            className="relative shadow-premium rounded-[48px] overflow-hidden border-[12px] border-slate-900 bg-black h-full aspect-phone ring-4 ring-slate-800/10 shrink-0"
-                            style={{ aspectRatio: '9/19.5' }}
+                            className="relative shadow-premium rounded-[48px] overflow-hidden border-[12px] border-slate-900 bg-black h-full shrink-0"
+                            style={{ aspectRatio: '9/19.5', height: '100%', minHeight: '500px' }}
                         >
                             {/* Island / Notch */}
                             <div className="absolute top-4 left-1/2 -translate-x-1/2 h-6 w-24 bg-black rounded-full z-30 flex items-center justify-center">
@@ -108,7 +116,10 @@ export const Editor: React.FC<EditorProps> = ({ initialMockup }) => {
                 </main>
 
                 {/* Right Panel: Settings */}
-                <aside className="w-[320px] min-w-[320px] max-w-[320px] bg-white border-l border-slate-200/60 flex flex-col shrink-0 shadow-[-4px_0_24px_-12px_rgba(0,0,0,0.05)] z-40">
+                <aside 
+                    className="bg-white border-l border-slate-200/60 flex flex-col shrink-0 shadow-[-4px_0_24px_-12px_rgba(0,0,0,0.05)] z-40"
+                    style={{ width: '320px', minWidth: '320px', maxWidth: '320px' }}
+                >
                     <div className="flex-1 overflow-y-auto no-scrollbar">
                         <RightPanel />
                     </div>

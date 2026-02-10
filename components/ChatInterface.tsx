@@ -235,8 +235,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         <button className="flex-1 flex justify-center relative py-2 transition-transform hover:scale-110 active:scale-95">
           <div className="relative">
             <MessageCircle className="text-white opacity-90" size={24} />
-            <span className="absolute -top-1 -right-2.5 bg-white text-blue-600 text-[8px] font-black px-1 py-0.5 rounded shadow-sm border border-blue-100 flex items-center justify-center leading-none min-w-[20px]">
-              SMS
+            <span className="absolute -top-1 -right-2.5 bg-orange-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm flex items-center justify-center leading-none min-w-[22px]">
+              V2.2
             </span>
           </div>
         </button>
