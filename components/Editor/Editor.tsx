@@ -48,7 +48,7 @@ export const Editor: React.FC<EditorProps> = ({ initialMockup }) => {
                         <div className="flex items-center gap-1.5">
                             <span className={`w-1.5 h-1.5 rounded-full ${isDirty ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'}`} />
                             <span className={`text-[10px] font-bold uppercase tracking-widest ${isDirty ? 'text-amber-600' : 'text-emerald-600'}`}>
-                                {isDirty ? 'Unsaved Changes' : 'v2.3-ULTRA-STABLE'}
+                                {isDirty ? 'Unsaved Changes' : 'v2.4-ULTRA-HARDENED'}
                             </span>
                         </div>
                     </div>

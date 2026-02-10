@@ -197,12 +197,22 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const isWeb = channel === 'WEB';
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-gray-100 flex flex-col font-sans">
+    <div 
+      className="relative w-full h-full overflow-hidden bg-gray-100 flex flex-col font-sans"
+      style={{ width: '100% !important', minWidth: '100% !important', height: '100% !important' }}
+    >
 
       {/* Scrollable Atmosphere Backdrop - Mirroring a real browser experience */}
       <div 
-        className="absolute inset-0 overflow-y-auto z-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-        style={{ width: '100%', height: '100%', left: 0, top: 0, paddingTop: isPreview ? '40px' : '0' }}
+        className="absolute z-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        style={{ 
+          width: '100% !important', 
+          minWidth: '100% !important',
+          height: isPreview ? 'calc(100% - 44px) !important' : '100% !important', 
+          left: 0, 
+          top: isPreview ? '44px' : '0', 
+          overflowY: 'auto' 
+        }}
       >
         {assets.backgroundUrl ? (
           <>
@@ -239,8 +249,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         <button className="flex-1 flex justify-center relative py-2 transition-transform hover:scale-110 active:scale-95">
           <div className="relative">
             <MessageCircle className="text-white opacity-90" size={24} />
-            <span className="absolute -top-1 -right-2.5 bg-orange-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm flex items-center justify-center leading-none min-w-[24px]">
-              V2.3
+            <span className="absolute -top-1 -right-2.5 bg-rose-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xl flex items-center justify-center leading-none min-w-[26px]">
+              V2.4
             </span>
           </div>
         </button>
