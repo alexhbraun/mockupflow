@@ -16,10 +16,11 @@ interface ChatInterfaceProps {
   onSessionComplete?: () => void;
   trackingParams?: Record<string, string | null>;
   startsOpen?: boolean;
+  personalization?: string | null;
 }
 
 export const ChatInterface: React.FC<ChatInterfaceProps> = ({
-  flow, theme, assets, channel, isPreview, liveMode, systemPrompt, onSessionStart, onStepComplete, onSessionComplete, trackingParams, startsOpen
+  flow, theme, assets, channel, isPreview, liveMode, systemPrompt, onSessionStart, onStepComplete, onSessionComplete, trackingParams, startsOpen, personalization
 }) => {
   const [isOpen, setIsOpen] = useState(startsOpen || false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -294,6 +295,11 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           )}
           <div className="flex-1 min-w-0">
             <h3 className="font-bold text-sm tracking-tight truncate leading-tight">{theme.chatTitle}</h3>
+            {personalization && (
+              <p className="text-[10px] font-bold text-white/70 italic leading-none mb-1">
+                Personalized Demo for {personalization}
+              </p>
+            )}
             <div className="flex items-center gap-1.5 opacity-80">
               <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.6)]" />
               <p className="text-[10px] font-bold uppercase tracking-wider">{channel === 'SMS' ? 'Direct SMS' : 'Active Now'}</p>

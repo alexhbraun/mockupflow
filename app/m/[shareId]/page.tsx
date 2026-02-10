@@ -12,12 +12,13 @@ export default function ViewerPage() {
   const [mockup, setMockup] = useState<Mockup | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Extract tracking params
+  // Extract tracking & personalization params
   const trackingParams = {
     idid: searchParams.get('idid'),
     adid: searchParams.get('adid'),
     affid: searchParams.get('affid')
   };
+  const personalization = searchParams.get('for');
 
   useEffect(() => {
     // For MVP, we allow fetching directly from Firestore by ID if rules allow public read
@@ -74,6 +75,7 @@ export default function ViewerPage() {
               liveMode={true}
               systemPrompt={mockup.prompt}
               startsOpen={true}
+              personalization={personalization}
               trackingParams={trackingParams}
             />
           </div>
