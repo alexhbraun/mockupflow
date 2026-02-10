@@ -200,13 +200,16 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     <div className="relative w-full h-full overflow-hidden bg-gray-100 flex flex-col font-sans">
 
       {/* Scrollable Atmosphere Backdrop - Mirroring a real browser experience */}
-      <div className="absolute inset-0 overflow-y-auto z-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      <div 
+        className="absolute inset-0 overflow-y-auto z-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        style={{ width: '100%', height: '100%', left: 0, top: 0, paddingTop: isPreview ? '40px' : '0' }}
+      >
         {assets.backgroundUrl ? (
           <>
             <img
               src={assets.backgroundUrl}
-              className="w-full h-auto object-top block"
-              style={{ width: '100%' }}
+              className="block"
+              style={{ width: '100% !important', minWidth: '100% !important', height: 'auto', objectPosition: 'top', display: 'block' }}
               alt="Atmosphere Backdrop"
               onLoad={() => setImageLoading(false)}
               onError={() => setImageLoading(false)}
@@ -236,8 +239,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         <button className="flex-1 flex justify-center relative py-2 transition-transform hover:scale-110 active:scale-95">
           <div className="relative">
             <MessageCircle className="text-white opacity-90" size={24} />
-            <span className="absolute -top-1 -right-2.5 bg-orange-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm flex items-center justify-center leading-none min-w-[22px]">
-              V2.2
+            <span className="absolute -top-1 -right-2.5 bg-orange-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm flex items-center justify-center leading-none min-w-[24px]">
+              V2.3
             </span>
           </div>
         </button>
@@ -261,7 +264,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <div className={`relative z-50 flex flex-col h-full bg-white transition-all duration-500 ease-in-out origin-bottom-right 
         ${isOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-90 pointer-events-none'}
         ${(isWeb && !isPreview) ? 'max-w-md mx-auto mt-4 mb-20 shadow-2xl rounded-2xl overflow-hidden' : 'w-full h-full'}`}
-        style={{ height: (isWeb && !isPreview) ? '75%' : '100%', width: '100%' }}>
+        style={{ height: (isWeb && !isPreview) ? '75%' : '100%', width: '100% !important' }}>
 
         {/* Header */}
         <div className="p-4 flex items-center gap-3 z-20 shadow-sm" style={{ backgroundColor: theme.primaryColor, color: theme.headerTextColor }}>
