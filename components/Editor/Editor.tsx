@@ -81,8 +81,12 @@ export const Editor: React.FC<EditorProps> = ({ initialMockup }) => {
                 <main className="flex-1 bg-slate-100/50 relative flex justify-center items-center p-6 lg:p-12 overflow-hidden">
                     {/* Device Frame Wrapper */}
                     <div className="relative h-full w-full flex items-center justify-center animate-in zoom-in-95 duration-500 max-h-[85vh]">
-                        {/* Apple iPhone 15 Pro Style Frame - Using robust aspect ratio from config */}
-                        <div className="relative shadow-premium rounded-[48px] overflow-hidden border-[12px] border-slate-900 bg-black h-full aspect-phone ring-4 ring-slate-800/10 shrink-0">
+                        {/* Apple iPhone 15 Pro Style Frame - Using robust aspect ratio with inline fallback for production stability */}
+                        {/* Deployment Check: v2.1.2-stable */}
+                        <div 
+                            className="relative shadow-premium rounded-[48px] overflow-hidden border-[12px] border-slate-900 bg-black h-full aspect-phone ring-4 ring-slate-800/10 shrink-0"
+                            style={{ aspectRatio: '9/19.5' }}
+                        >
                             {/* Island / Notch */}
                             <div className="absolute top-4 left-1/2 -translate-x-1/2 h-6 w-24 bg-black rounded-full z-30 flex items-center justify-center">
                                 <div className="h-1.5 w-1.5 rounded-full bg-slate-800/50 ml-auto mr-4" />

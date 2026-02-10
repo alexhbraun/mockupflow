@@ -252,7 +252,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           className="absolute bottom-20 right-4 w-12 h-12 rounded-lg flex items-center justify-center shadow-xl transition-all hover:scale-110 active:scale-95 animate-in fade-in zoom-in duration-300 z-50 border border-white/20"
           style={{ backgroundColor: '#00a2ff', color: '#ffffff' }}
         >
-          <MessageSquare size={22} fill="white" className="text-white" />
+          <MessageCircle size={22} fill="white" className="text-white" />
         </button>
       )}
 
