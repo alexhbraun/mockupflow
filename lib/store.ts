@@ -151,7 +151,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
             }));
         } catch (error: any) {
             console.error('Flow generation error:', error);
-            alert(`Failed to generate flow: ${error?.message || 'Unknown error'}\n\nPlease check:\n1. Your GEMINI_API_KEY is set in .env.local\n2. Your prompt is clear and specific\n3. The console for detailed errors`);
+            alert(`Failed to generate flow: ${error?.message || 'Unknown error'}\n\nPlease check:\n1. Your OPENAI_API_KEY is set in .env.local\n2. Your prompt is clear and specific\n3. The console for detailed errors`);
             set({ isGenerating: false });
         }
     },
@@ -163,18 +163,18 @@ export const useEditorStore = create<EditorState>((set, get) => ({
         const saveTimeout = 10000; // 10s timeout for saving
 
         try {
-            const { doc, updateDoc, serverTimestamp } = await import('firebase/firestore');
+            const { doc, setDoc, serverTimestamp } = await import('firebase/firestore');
             const { db } = await import('./firebase');
 
             if (!db) {
                 throw new Error("Firestore not initialized. Check your environment variables.");
             }
 
-            // Create a promise for the update that we can race against a timeout
-            const updatePromise = updateDoc(doc(db, 'mockups', state.currentMockup.id), {
+            // Use setDoc with merge: true to create the doc if it doesn't exist
+            const updatePromise = setDoc(doc(db, 'mockups', state.currentMockup.id), {
                 ...state.currentMockup,
                 updatedAt: serverTimestamp()
-            });
+            }, { merge: true });
 
             const timeoutPromise = new Promise((_, reject) =>
                 setTimeout(() => reject(new Error('Save operation timed out')), saveTimeout)

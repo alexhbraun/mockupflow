@@ -26,7 +26,13 @@ export default function NewMockupPage() {
             description: '',
             theme: { chatTitle: 'Chat Support', primaryColor: '#2563EB', headerTextColor: '#FFFFFF', iconColor: '#2563EB', launcherColor: '#2563EB' },
             assets: { backgroundUrl: 'https://picsum.photos/400/800' },
-            flow: [{ id: nanoid(6), type: 'BOT_MESSAGE', text: 'Hi! I am a bot.', delayMs: 800 }],
+            flow: [
+              { id: nanoid(6), type: 'BOT_MESSAGE', text: 'Welcome to Guardian Pest Solutions. I am Guardian Bot, your AI Customer Service Assistant here to provide expert support. How can I assist you today?', delayMs: 1000 },
+              { id: nanoid(6), type: 'INPUT_CAPTURE', prompt: "What's your name?", fieldKey: 'name', fieldType: 'text', required: true, delayMs: 500 },
+              { id: nanoid(6), type: 'BOT_MESSAGE', text: 'Nice to meet you! 👋', delayMs: 800 },
+              { id: nanoid(6), type: 'QUICK_REPLIES', text: 'How can I help you today?', options: ['Get a Quote', 'Schedule Service', 'Ask a Question'], delayMs: 600 },
+              { id: nanoid(6), type: 'BOT_MESSAGE', text: 'Great! Let me connect you with the right team member.', delayMs: 800 }
+            ],
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp()
           });

@@ -1,14 +1,16 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import OpenAI from 'openai';
 import { NextResponse } from 'next/server';
 
-// Ensure you have GEMINI_API_KEY in .env.local
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY || '',
+});
 
 export async function POST(req: Request) {
   try {
     const { prompt } = await req.json();
 
-    if (!process.env.GEMINI_API_KEY) {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
       return NextResponse.json({ error: "Server missing API Key" }, { status: 500 });
     }
 
@@ -16,10 +18,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Prompt is required" }, { status: 400 });
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
-
-    const systemPrompt = `
-You are a chatbot flow generator. The user will provide a system prompt that describes a chatbot's personality, behavior, and conversation goals.
+    const systemPrompt = `You are a chatbot flow generator. The user will provide a system prompt that describes a chatbot's personality, behavior, and conversation goals.
 
 Your task is to convert that system prompt into a structured conversation flow.
 
@@ -43,16 +42,18 @@ Return ONLY a raw JSON array (no markdown, no code fences) with this schema:
 Available types: BOT_MESSAGE, USER_MESSAGE, INPUT_CAPTURE, QUICK_REPLIES
 Available fieldTypes: text, email, phone
 
-Make it 6-10 steps, natural, and aligned with the system prompt's goals.
-    `;
+Make it 6-10 steps, natural, and aligned with the system prompt's goals.`;
 
-    const result = await model.generateContent(systemPrompt);
-    const response = await result.response;
-    const text = response.text();
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: "You are a helpful assistant that generates chatbot flows in JSON format." },
+        { role: "user", content: systemPrompt }
+      ],
+      temperature: 0.7,
+    });
 
-    console.log('AI Response:', text);
-
-    // Clean up if the model returned markdown
+    const text = completion.choices[0]?.message?.content || '';
     const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
 
     let flow;
@@ -60,14 +61,12 @@ Make it 6-10 steps, natural, and aligned with the system prompt's goals.
       flow = JSON.parse(cleanText);
     } catch (parseError) {
       console.error('JSON Parse Error:', parseError);
-      console.error('Attempted to parse:', cleanText);
       return NextResponse.json({
         error: "AI returned invalid JSON. Please try again or simplify your prompt."
       }, { status: 500 });
     }
 
     if (!Array.isArray(flow)) {
-      console.error('Flow is not an array:', flow);
       return NextResponse.json({
         error: "AI returned invalid flow structure. Please try again."
       }, { status: 500 });
@@ -76,10 +75,7 @@ Make it 6-10 steps, natural, and aligned with the system prompt's goals.
     return NextResponse.json({ flow });
   } catch (error: any) {
     console.error('AI Gen Error:', error);
-    console.error('Error message:', error?.message);
-    console.error('Error stack:', error?.stack);
-    return NextResponse.json({
-      error: error?.message || "Generation failed. Please check your API key and try again."
-    }, { status: 500 });
+    let errorMessage = error?.message || "Generation failed. Please check your API key and try again.";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

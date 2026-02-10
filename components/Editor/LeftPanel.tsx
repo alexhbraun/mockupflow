@@ -49,13 +49,22 @@ export const LeftPanel: React.FC = () => {
             <div className="p-6 border-b border-slate-100 flex flex-col gap-5">
                 <div className="flex items-center justify-between">
                     <h2 className="text-sm font-bold text-slate-800 uppercase tracking-tight">Sequence</h2>
-                    <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-bold">
-                        {currentMockup.flow.length} STAGES
-                    </span>
+                    <div className="flex items-center gap-2">
+                        <span className="flex items-center gap-1.5 text-[10px] bg-green-50 text-green-600 px-2 py-0.5 rounded-full font-bold border border-green-100">
+                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                            Live AI Active
+                        </span>
+                        <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-bold">
+                            {currentMockup.flow.length} STAGES
+                        </span>
+                    </div>
                 </div>
 
                 <div className="space-y-3">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Construct Flow</p>
+                    <div className="flex flex-col gap-1">
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Construct Flow</p>
+                        <p className="text-[9px] text-slate-500 leading-tight">The list below is for manual recording. Your preview is currently **100% driven by GPT-4o** using the prompt above.</p>
+                    </div>
                     <div className="grid grid-cols-2 gap-2">
                         <button onClick={() => handleAddStep('BOT_MESSAGE')} className="flex flex-col items-center justify-center gap-2 p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-white hover:border-indigo-200 hover:shadow-lg hover:shadow-indigo-500/5 transition-all group">
                             <MessageCircle size={18} className="text-indigo-500 group-hover:scale-110 transition-transform" />

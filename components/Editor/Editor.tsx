@@ -95,6 +95,8 @@ export const Editor: React.FC<EditorProps> = ({ initialMockup }) => {
                                     assets={currentMockup.assets}
                                     channel={currentMockup.channel}
                                     isPreview={true}
+                                    liveMode={true}
+                                    systemPrompt={currentMockup.prompt}
                                 />
                             </div>
                         </div>

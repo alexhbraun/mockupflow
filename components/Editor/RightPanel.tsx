@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useEditorStore } from '@/lib/store';
 import { nanoid } from 'nanoid';
 import { Globe, Camera, UploadCloud, Monitor, Copy, Link, Code, Check, Save } from 'lucide-react';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '@/lib/firebase';
 
 export const RightPanel: React.FC = () => {
     const { currentMockup, updateTheme, updateAssets, selectedStepIndex, updateStep, setSelectedStep, isDirty, saveMockup } = useEditorStore();
@@ -12,11 +14,52 @@ export const RightPanel: React.FC = () => {
     const [copied, setCopied] = useState(false);
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, key: 'avatarUrl' | 'backgroundUrl') => {
-        // ... (existing handleFileUpload logic)
+        if (!e.target.files?.length) return;
+        const file = e.target.files[0];
+        
+        try {
+            setUploading(true);
+            
+            if (!storage) {
+                console.warn("Storage not initialized, switching to local mode");
+                throw new Error("Storage service unavailable");
+            }
+
+            const storageRef = ref(storage, `uploads/${nanoid()}_${file.name}`);
+            const snapshot = await uploadBytes(storageRef, file);
+            const downloadURL = await getDownloadURL(snapshot.ref);
+
+            updateAssets({ [key]: downloadURL });
+        } catch (error) {
+            console.error("Upload error due to missing Firebase config, using local preview:", error);
+            // Fallback: Read as Data URL
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const result = e.target?.result as string;
+                if (result) {
+                    updateAssets({ [key]: result });
+                }
+            };
+            reader.readAsDataURL(file);
+        } finally {
+            setUploading(false);
+            e.target.value = ''; // Reset input
+        }
     };
 
     const handleCaptureUrl = () => {
-        // ... (existing handleCaptureUrl logic)
+        if (!currentMockup?.assets.backgroundUrl) return;
+        const url = currentMockup.assets.backgroundUrl;
+        
+        // Basic validation for URL
+        if (!url.startsWith('http')) {
+            alert("Please enter a valid URL starting with http:// or https://");
+            return;
+        }
+
+        // Use Microlink API for screenshot (Mobile Viewport + Full Page)
+        const screenshotUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot.fullPage=true&viewport.width=390&viewport.height=844&viewport.isMobile=true&viewport.deviceScaleFactor=3&meta=false&embed=screenshot.url`;
+        updateAssets({ backgroundUrl: screenshotUrl });
     };
 
     const handleSaveLocal = async () => {

@@ -9,6 +9,8 @@ interface ChatInterfaceProps {
   assets: MockupAssets;
   channel: ChannelType;
   isPreview?: boolean;
+  liveMode?: boolean;
+  systemPrompt?: string;
   onSessionStart?: () => void;
   onStepComplete?: (stepIndex: number, data?: any) => void;
   onSessionComplete?: () => void;
@@ -16,7 +18,7 @@ interface ChatInterfaceProps {
 }
 
 export const ChatInterface: React.FC<ChatInterfaceProps> = ({
-  flow, theme, assets, channel, isPreview, onSessionStart, onStepComplete, onSessionComplete, trackingParams
+  flow, theme, assets, channel, isPreview, liveMode, systemPrompt, onSessionStart, onStepComplete, onSessionComplete, trackingParams
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -39,7 +41,36 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     setCurrentStepIndex(0);
     setIsTyping(false);
     hasStarted.current = false;
-    processStep(0, []);
+    
+    if (liveMode) {
+      // In live mode, we start by getting an initial message from the AI
+      startLiveChat();
+    } else {
+      processStep(0, []);
+    }
+  };
+
+  const startLiveChat = async () => {
+    setIsTyping(true);
+    try {
+      const res = await fetch('/api/ai/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          messages: [{ role: 'user', content: 'Generate a short initial greeting based on your instructions.' }], 
+          systemPrompt 
+        })
+      });
+      const data = await res.json();
+      setIsTyping(false);
+      if (data.message) {
+        setHistory([{ type: 'bot', text: data.message.content }]);
+      }
+    } catch (err) {
+      setIsTyping(false);
+      console.error("Failed to start live chat:", err);
+      setHistory([{ type: 'bot', text: "Hello! How can I help you today?" }]);
+    }
   };
 
   useEffect(() => {
@@ -74,6 +105,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         const newMsg = { type: 'bot', text: step.text };
         setHistory(prev => [...prev, newMsg]);
         if (onStepComplete) onStepComplete(index);
+        setCurrentStepIndex(index + 1);
         processStep(index + 1, [...currentHistory, newMsg]);
       }, step.delayMs || 600);
     } else if (step.type === 'USER_MESSAGE') {
@@ -81,6 +113,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         const newMsg = { type: 'user', text: step.text };
         setHistory(prev => [...prev, newMsg]);
         if (onStepComplete) onStepComplete(index);
+        setCurrentStepIndex(index + 1);
         processStep(index + 1, [...currentHistory, newMsg]);
       }, step.delayMs || 600);
     }
@@ -106,7 +139,40 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     const val = userInput;
     setUserInput('');
 
-    setHistory(prev => [...prev, { type: 'user', text: val }]);
+    const newMsg = { type: 'user', text: val };
+    setHistory(prev => [...prev, newMsg]);
+
+    if (liveMode) {
+      setIsTyping(true);
+      // Map history to OpenAI message format
+      const messages = [...history, newMsg].map(msg => ({
+        role: msg.type === 'user' ? 'user' : 'assistant',
+        content: msg.text
+      }));
+
+      fetch('/api/ai/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages, systemPrompt })
+      })
+      .then(res => res.json())
+      .then(data => {
+        setIsTyping(false);
+        if (data.message) {
+          setHistory(prev => [...prev, { type: 'bot', text: data.message.content }]);
+        } else if (data.error) {
+          console.error("Chat API error:", data.error);
+          setHistory(prev => [...prev, { type: 'bot', text: "Sorry, I encountered an error. Please try again." }]);
+        }
+      })
+      .catch(err => {
+        setIsTyping(false);
+        console.error("Fetch error:", err);
+        setHistory(prev => [...prev, { type: 'bot', text: "Connection error. Please check your internet." }]);
+      });
+      return;
+    }
+
     if (onStepComplete) onStepComplete(currentStepIndex, { [step.fieldKey || 'input']: val });
 
     setCurrentStepIndex(prev => {
@@ -139,7 +205,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           <>
             <img
               src={assets.backgroundUrl}
-              className="w-full min-h-[200%] object-cover object-top"
+              className="w-full h-auto object-top"
               alt="Atmosphere Backdrop"
               onLoad={() => setImageLoading(false)}
               onError={() => setImageLoading(false)}
@@ -247,11 +313,11 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
         {/* Interaction Area */}
         <div className="p-5 bg-white border-t border-slate-100">
-          {currentStep?.type === 'INPUT_CAPTURE' && (
+          {(liveMode || currentStep?.type === 'INPUT_CAPTURE') && (
             <form onSubmit={handleInputSubmit} className="flex gap-3">
               <input
-                type={currentStep.fieldType || 'text'}
-                placeholder={currentStep.prompt || 'Write your response...'}
+                type={liveMode ? 'text' : (currentStep?.fieldType || 'text')}
+                placeholder={liveMode ? "Type your message..." : (currentStep?.prompt || 'Write your response...')}
                 className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                 value={userInput}
                 onChange={e => setUserInput(e.target.value)}
@@ -263,7 +329,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             </form>
           )}
 
-          {currentStep?.type === 'QUICK_REPLIES' && (
+          {!liveMode && currentStep?.type === 'QUICK_REPLIES' && (
             <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest text-center">{currentStep.prompt || 'Choose an option'}</p>
               <div className="flex flex-wrap gap-2 justify-center">
@@ -282,7 +348,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           )}
 
           {/* Placeholder input when nothing is active */}
-          {!['INPUT_CAPTURE', 'QUICK_REPLIES'].includes(currentStep?.type) && currentStepIndex < flow.length && (
+          {!liveMode && !['INPUT_CAPTURE', 'QUICK_REPLIES'].includes(currentStep?.type) && currentStepIndex < flow.length && (
             <div className="h-11 bg-slate-50 rounded-xl w-full flex items-center justify-center px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest border border-slate-100/50">
               {isTyping ? 'Syncing...' : 'Encrypted Session active'}
             </div>

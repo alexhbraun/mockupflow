@@ -34,7 +34,12 @@ export default function BuilderPage() {
         channel: 'WEB',
         theme: { chatTitle: 'Chat Support', primaryColor: '#4f46e5', headerTextColor: '#FFFFFF', iconColor: '#2563EB' },
         assets: { backgroundUrl: 'https://images.unsplash.com/photo-1557683316-973673baf926' },
-        flow: [{ id: '1', type: 'BOT_MESSAGE', text: 'Hi! I am a local bot.', delayMs: 800 }],
+        flow: [
+          { id: '1', type: 'BOT_MESSAGE', text: 'Welcome! I am your AI assistant.', delayMs: 1000 },
+          { id: '2', type: 'INPUT_CAPTURE', prompt: "What's your name?", fieldKey: 'name', fieldType: 'text', required: true, delayMs: 500 },
+          { id: '3', type: 'BOT_MESSAGE', text: 'Nice to meet you! 👋', delayMs: 800 },
+          { id: '4', type: 'QUICK_REPLIES', text: 'How can I help you?', options: ['Get Started', 'Learn More', 'Contact Support'], delayMs: 600 }
+        ],
         createdAt: {} as any,
         updatedAt: {} as any
       });
