@@ -240,14 +240,17 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <div className="absolute inset-0 bg-black/5 pointer-events-none z-10" />
 
       {/* Decorative Bottom Bar (Matches screenshot) - Fixed */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-blue-600 flex items-center justify-around px-10 z-40">
+      <div className="absolute bottom-0 left-0 right-0 h-16 flex items-center justify-around px-10 z-40" style={{ backgroundColor: theme.primaryColor }}>
         <button className="flex-1 flex justify-center py-2 transition-transform hover:scale-110 active:scale-95">
           <Phone className="text-white opacity-80" size={22} />
         </button>
         <button className="flex-1 flex justify-center relative py-2 transition-transform hover:scale-110 active:scale-95">
           <div className="relative">
             <MessageCircle className="text-white opacity-90" size={24} />
-            <span className="absolute -top-1 -right-2.5 bg-indigo-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xl flex items-center justify-center leading-none min-w-[26px]">
+            <span 
+              className="absolute -top-1 -right-2.5 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xl flex items-center justify-center leading-none min-w-[26px]"
+              style={{ backgroundColor: theme.primaryColor, filter: 'brightness(1.1)' }}
+            >
               V2.7
             </span>
           </div>
@@ -262,7 +265,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         <button
           onClick={() => setIsOpen(true)}
           className="absolute bottom-20 right-4 w-12 h-12 rounded-lg flex items-center justify-center shadow-xl transition-all hover:scale-110 active:scale-95 animate-in fade-in zoom-in duration-300 z-50 border border-white/20"
-          style={{ backgroundColor: '#00a2ff', color: '#ffffff' }}
+          style={{ backgroundColor: theme.primaryColor, color: '#ffffff' }}
         >
           <MessageCircle size={22} fill="white" className="text-white" />
         </button>
@@ -326,9 +329,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           {isTyping && (
             <div className="flex justify-start animate-in fade-in duration-300">
               <div className="bg-white border border-slate-100 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm flex gap-1.5 items-center">
-                <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                <div className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: theme.primaryColor, animationDelay: '0ms' }} />
+                <div className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: theme.primaryColor, animationDelay: '150ms' }} />
+                <div className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: theme.primaryColor, animationDelay: '300ms' }} />
               </div>
             </div>
           )}
