@@ -71,18 +71,18 @@ export const Editor: React.FC<EditorProps> = ({ initialMockup }) => {
             {/* Main Workspace */}
             <div className="flex-1 flex overflow-hidden">
                 {/* Left Panel: Steps */}
-                <aside className="w-[320px] bg-white border-r border-slate-200/60 flex flex-col shrink-0 shadow-[4px_0_24px_-12px_rgba(0,0,0,0.05)] z-40">
+                <aside className="w-[300px] bg-white border-r border-slate-200/60 flex flex-col shrink-0 shadow-[4px_0_24px_-12px_rgba(0,0,0,0.05)] z-40">
                     <div className="flex-1 overflow-y-auto no-scrollbar">
                         <LeftPanel />
                     </div>
                 </aside>
 
                 {/* Center: Canvas */}
-                <main className="flex-1 bg-slate-100/50 relative flex justify-center items-center p-12 overflow-hidden">
+                <main className="flex-1 bg-slate-100/50 relative flex justify-center items-center p-6 lg:p-12 overflow-hidden">
                     {/* Device Frame Wrapper */}
-                    <div className="relative h-full w-full flex items-center justify-center animate-in zoom-in-95 duration-500">
+                    <div className="relative h-full w-full flex items-center justify-center animate-in zoom-in-95 duration-500 max-h-[85vh]">
                         {/* Apple iPhone 15 Pro Style Frame */}
-                        <div className="relative shadow-[0_0_80px_-15px_rgba(0,0,0,0.15)] rounded-[48px] overflow-hidden border-[12px] border-slate-900 bg-black h-full max-h-[780px] aspect-[9/19.5] ring-4 ring-slate-800/10">
+                        <div className="relative shadow-[0_40px_100px_-20px_rgba(0,0,0,0.25)] rounded-[48px] overflow-hidden border-[12px] border-slate-900 bg-black h-full aspect-[9/19.5] ring-4 ring-slate-800/10 shrink-0">
                             {/* Island / Notch */}
                             <div className="absolute top-4 left-1/2 -translate-x-1/2 h-6 w-24 bg-black rounded-full z-30 flex items-center justify-center">
                                 <div className="h-1.5 w-1.5 rounded-full bg-slate-800/50 ml-auto mr-4" />
@@ -100,18 +100,11 @@ export const Editor: React.FC<EditorProps> = ({ initialMockup }) => {
                                 />
                             </div>
                         </div>
-
-                        {/* Visual Indicators */}
-                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-white/50 backdrop-blur px-4 py-2 rounded-full border border-slate-200/50 shadow-sm">
-                            <span>Phone Preview</span>
-                            <div className="w-1 h-1 bg-slate-300 rounded-full" />
-                            <span>v2.1 Stable</span>
-                        </div>
                     </div>
                 </main>
 
                 {/* Right Panel: Settings */}
-                <aside className="w-[340px] bg-white border-l border-slate-200/60 flex flex-col shrink-0 shadow-[-4px_0_24px_-12px_rgba(0,0,0,0.05)] z-40">
+                <aside className="w-[320px] bg-white border-l border-slate-200/60 flex flex-col shrink-0 shadow-[-4px_0_24px_-12px_rgba(0,0,0,0.05)] z-40">
                     <div className="flex-1 overflow-y-auto no-scrollbar">
                         <RightPanel />
                     </div>

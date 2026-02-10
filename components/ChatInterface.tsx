@@ -228,13 +228,19 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <div className="absolute inset-0 bg-black/5 pointer-events-none z-10" />
 
       {/* Decorative Bottom Bar (Matches screenshot) - Fixed */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-blue-600 flex items-center justify-around px-6 z-40">
-        <Phone className="text-white opacity-80" size={24} />
-        <div className="relative">
-          <MessageSquare className="text-white opacity-80" size={24} />
-          <span className="absolute -top-1 -right-4 bg-white text-blue-600 text-[8px] font-bold px-1 rounded-sm">sms</span>
-        </div>
-        <Mail className="text-white opacity-80" size={24} />
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-blue-600 flex items-center justify-around px-8 z-40">
+        <button className="p-2 transition-transform hover:scale-110 active:scale-95">
+          <Phone className="text-white opacity-80" size={22} />
+        </button>
+        <button className="relative p-2 transition-transform hover:scale-110 active:scale-95">
+          <MessageCircle className="text-white opacity-90" size={24} />
+          <span className="absolute -top-0.5 -right-2 bg-white text-blue-600 text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-sm border border-blue-100 flex items-center justify-center leading-none">
+            SMS
+          </span>
+        </button>
+        <button className="p-2 transition-transform hover:scale-110 active:scale-95">
+          <Mail className="text-white opacity-80" size={22} />
+        </button>
       </div>
 
       {/* Launcher Button (Visible when closed) - Matches screenshot square-ish look */}
