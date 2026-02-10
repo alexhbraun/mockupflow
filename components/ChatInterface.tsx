@@ -197,29 +197,27 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const isWeb = channel === 'WEB';
 
   return (
-    <div 
-      className="relative w-full h-full overflow-hidden bg-gray-100 flex flex-col font-sans"
-      style={{ width: '100% !important', minWidth: '100% !important', height: '100% !important' }}
-    >
+    <div className="relative w-full h-full overflow-hidden bg-white flex flex-col font-sans">
 
-      {/* Scrollable Atmosphere Backdrop - Mirroring a real browser experience */}
+      {/* Scrollable Atmosphere Backdrop - Ultra Hardened v2.6 */}
       <div 
-        className="absolute z-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className="absolute inset-0 z-0 overflow-y-auto no-scrollbar bg-slate-50"
         style={{ 
-          width: '100% !important', 
-          minWidth: '100% !important',
-          height: isPreview ? 'calc(100% - 44px) !important' : '100% !important', 
-          left: 0, 
-          top: isPreview ? '44px' : '0', 
-          overflowY: 'auto' 
+          top: isPreview ? '44px' : '0',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          width: '100%',
+          height: isPreview ? 'calc(100% - 44px)' : '100%',
+          overflowX: 'hidden'
         }}
       >
         {assets.backgroundUrl ? (
-          <>
+          <div className="w-full relative" style={{ width: '100%', minWidth: '100%' }}>
             <img
               src={assets.backgroundUrl}
-              className="block"
-              style={{ width: '100% !important', minWidth: '100% !important', height: 'auto', objectPosition: 'top', display: 'block' }}
+              className="w-full h-auto block"
+              style={{ width: '100%', minWidth: '100%', display: 'block', imageRendering: 'auto' }}
               alt="Atmosphere Backdrop"
               onLoad={() => setImageLoading(false)}
               onError={() => setImageLoading(false)}
@@ -232,9 +230,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 </div>
               </div>
             )}
-          </>
+          </div>
         ) : (
-          <div className="w-full h-full bg-gray-200" />
+          <div className="w-full h-full bg-slate-100" />
         )}
       </div>
 
@@ -249,8 +247,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         <button className="flex-1 flex justify-center relative py-2 transition-transform hover:scale-110 active:scale-95">
           <div className="relative">
             <MessageCircle className="text-white opacity-90" size={24} />
-            <span className="absolute -top-1 -right-2.5 bg-rose-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xl flex items-center justify-center leading-none min-w-[26px]">
-              V2.4
+            <span className="absolute -top-1 -right-2.5 bg-emerald-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xl flex items-center justify-center leading-none min-w-[26px]">
+              V2.6
             </span>
           </div>
         </button>
@@ -277,7 +275,11 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         style={{ height: (isWeb && !isPreview) ? '75%' : '100%', width: '100% !important' }}>
 
         {/* Header */}
-        <div className="p-4 flex items-center gap-3 z-20 shadow-sm" style={{ backgroundColor: theme.primaryColor, color: theme.headerTextColor }}>
+        <div 
+          className="p-4 flex items-center gap-3 z-20 shadow-sm cursor-pointer" 
+          style={{ backgroundColor: theme.primaryColor, color: theme.headerTextColor }}
+          onClick={() => isPreview && window.location.reload()}
+        >
           {assets.avatarUrl ? (
             <img src={assets.avatarUrl} className="w-8 h-8 rounded-full ring-2 ring-white/20 object-cover" alt="avatar" />
           ) : (
