@@ -247,8 +247,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         <button className="flex-1 flex justify-center relative py-2 transition-transform hover:scale-110 active:scale-95">
           <div className="relative">
             <MessageCircle className="text-white opacity-90" size={24} />
-            <span className="absolute -top-1 -right-2.5 bg-emerald-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xl flex items-center justify-center leading-none min-w-[26px]">
-              V2.6
+            <span className="absolute -top-1 -right-2.5 bg-indigo-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-xl flex items-center justify-center leading-none min-w-[26px]">
+              V2.7
             </span>
           </div>
         </button>
