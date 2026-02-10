@@ -15,12 +15,13 @@ interface ChatInterfaceProps {
   onStepComplete?: (stepIndex: number, data?: any) => void;
   onSessionComplete?: () => void;
   trackingParams?: Record<string, string | null>;
+  startsOpen?: boolean;
 }
 
 export const ChatInterface: React.FC<ChatInterfaceProps> = ({
-  flow, theme, assets, channel, isPreview, liveMode, systemPrompt, onSessionStart, onStepComplete, onSessionComplete, trackingParams
+  flow, theme, assets, channel, isPreview, liveMode, systemPrompt, onSessionStart, onStepComplete, onSessionComplete, trackingParams, startsOpen
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(startsOpen || false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [history, setHistory] = useState<any[]>([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -31,7 +32,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   // Initialize
   useEffect(() => {
-    if (isPreview) {
+    // Always reset/start if it's a preview or if it hasn't started yet
+    if (isPreview || !hasStarted.current) {
       reset();
     }
   }, [flow, isPreview]);

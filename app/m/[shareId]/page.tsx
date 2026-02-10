@@ -72,6 +72,7 @@ export default function ViewerPage() {
               assets={mockup.assets}
               channel={mockup.channel}
               isPreview={false}
+              startsOpen={true}
               trackingParams={trackingParams}
             />
           </div>
