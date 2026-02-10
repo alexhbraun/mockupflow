@@ -71,7 +71,7 @@ export const Editor: React.FC<EditorProps> = ({ initialMockup }) => {
             {/* Main Workspace */}
             <div className="flex-1 flex overflow-hidden">
                 {/* Left Panel: Steps */}
-                <aside className="w-[300px] bg-white border-r border-slate-200/60 flex flex-col shrink-0 shadow-[4px_0_24px_-12px_rgba(0,0,0,0.05)] z-40">
+                <aside className="w-[300px] min-w-[300px] max-w-[300px] bg-white border-r border-slate-200/60 flex flex-col shrink-0 shadow-[4px_0_24px_-12px_rgba(0,0,0,0.05)] z-40">
                     <div className="flex-1 overflow-y-auto no-scrollbar">
                         <LeftPanel />
                     </div>
@@ -81,14 +81,14 @@ export const Editor: React.FC<EditorProps> = ({ initialMockup }) => {
                 <main className="flex-1 bg-slate-100/50 relative flex justify-center items-center p-6 lg:p-12 overflow-hidden">
                     {/* Device Frame Wrapper */}
                     <div className="relative h-full w-full flex items-center justify-center animate-in zoom-in-95 duration-500 max-h-[85vh]">
-                        {/* Apple iPhone 15 Pro Style Frame */}
-                        <div className="relative shadow-[0_40px_100px_-20px_rgba(0,0,0,0.25)] rounded-[48px] overflow-hidden border-[12px] border-slate-900 bg-black h-full aspect-[9/19.5] ring-4 ring-slate-800/10 shrink-0">
+                        {/* Apple iPhone 15 Pro Style Frame - Using robust aspect ratio from config */}
+                        <div className="relative shadow-premium rounded-[48px] overflow-hidden border-[12px] border-slate-900 bg-black h-full aspect-phone ring-4 ring-slate-800/10 shrink-0">
                             {/* Island / Notch */}
                             <div className="absolute top-4 left-1/2 -translate-x-1/2 h-6 w-24 bg-black rounded-full z-30 flex items-center justify-center">
                                 <div className="h-1.5 w-1.5 rounded-full bg-slate-800/50 ml-auto mr-4" />
                             </div>
 
-                            <div className="w-full h-full">
+                            <div className="w-full h-full relative">
                                 <ChatInterface
                                     flow={currentMockup.flow}
                                     theme={currentMockup.theme}
@@ -104,7 +104,7 @@ export const Editor: React.FC<EditorProps> = ({ initialMockup }) => {
                 </main>
 
                 {/* Right Panel: Settings */}
-                <aside className="w-[320px] bg-white border-l border-slate-200/60 flex flex-col shrink-0 shadow-[-4px_0_24px_-12px_rgba(0,0,0,0.05)] z-40">
+                <aside className="w-[320px] min-w-[320px] max-w-[320px] bg-white border-l border-slate-200/60 flex flex-col shrink-0 shadow-[-4px_0_24px_-12px_rgba(0,0,0,0.05)] z-40">
                     <div className="flex-1 overflow-y-auto no-scrollbar">
                         <RightPanel />
                     </div>

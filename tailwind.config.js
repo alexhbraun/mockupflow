@@ -43,6 +43,12 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      aspectRatio: {
+        'phone': '9 / 19.5',
+      },
+      boxShadow: {
+        'premium': '0 40px 100px -20px rgba(0,0,0,0.25)',
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
