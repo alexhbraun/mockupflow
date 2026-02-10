@@ -51,7 +51,7 @@ export default function ViewerPage() {
   if (!mockup) return <div className="h-screen flex items-center justify-center text-gray-500">Mockup not found</div>;
 
   return (
-    <div className="w-screen h-screen bg-[#F1F5F9] flex items-center justify-center p-4">
+    <div className="w-screen h-screen bg-transparent flex items-center justify-center p-0">
       <div 
         className="relative h-full w-full max-w-lg mx-auto flex items-center justify-center animate-in zoom-in-95 duration-500 max-h-[90vh]"
       >
