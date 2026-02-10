@@ -22,6 +22,12 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase (Singleton)
+console.log('--- Firebase Initialization Diagnostics ---');
+console.log('Project ID:', firebaseConfig.projectId);
+console.log('API Key starts with:', firebaseConfig.apiKey?.substring(0, 5) + '...');
+console.log('Auth Domain:', firebaseConfig.authDomain);
+console.log('-------------------------------------------');
+
 let app: FirebaseApp | undefined;
 let auth: Auth | undefined;
 let db: Firestore | undefined;
