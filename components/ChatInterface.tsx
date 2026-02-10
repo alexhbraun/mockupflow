@@ -205,7 +205,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           <>
             <img
               src={assets.backgroundUrl}
-              className="w-full h-auto object-top"
+              className="w-full h-auto object-top block"
+              style={{ width: '100%' }}
               alt="Atmosphere Backdrop"
               onLoad={() => setImageLoading(false)}
               onError={() => setImageLoading(false)}
@@ -259,8 +260,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       {/* Chat Container */}
       <div className={`relative z-50 flex flex-col h-full bg-white transition-all duration-500 ease-in-out origin-bottom-right 
         ${isOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-90 pointer-events-none'}
-        ${isWeb ? 'max-w-md mx-auto mt-4 mb-20 shadow-2xl rounded-2xl overflow-hidden' : 'w-full h-full'}`}
-        style={{ height: isWeb ? '75%' : '100%' }}>
+        ${(isWeb && !isPreview) ? 'max-w-md mx-auto mt-4 mb-20 shadow-2xl rounded-2xl overflow-hidden' : 'w-full h-full'}`}
+        style={{ height: (isWeb && !isPreview) ? '75%' : '100%', width: '100%' }}>
 
         {/* Header */}
         <div className="p-4 flex items-center gap-3 z-20 shadow-sm" style={{ backgroundColor: theme.primaryColor, color: theme.headerTextColor }}>
