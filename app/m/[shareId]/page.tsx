@@ -71,7 +71,8 @@ export default function ViewerPage() {
               theme={mockup.theme}
               assets={mockup.assets}
               channel={mockup.channel}
-              isPreview={false}
+              liveMode={true}
+              systemPrompt={mockup.prompt}
               startsOpen={true}
               trackingParams={trackingParams}
             />
