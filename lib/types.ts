@@ -41,6 +41,7 @@ export interface Mockup {
   description: string;
   prompt?: string; // AI generation prompt
   channel: ChannelType;
+  idid?: string; 
   theme: MockupTheme;
   assets: MockupAssets;
   flow: Step[];

@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { ChatInterface } from '@/components/ChatInterface';
 import { Mockup } from '@/lib/types';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 export default function ViewerPage() {
@@ -21,21 +21,39 @@ export default function ViewerPage() {
   const personalization = searchParams.get('for');
 
   useEffect(() => {
-    // For MVP, we allow fetching directly from Firestore by ID if rules allow public read
-    // Or we use the API route if implemented. Let's try direct first for speed.
     if (!shareId) return;
 
-    // Attempt fetch
-    getDoc(doc(db, 'mockups', shareId as string)).then(snap => {
-      if (snap.exists()) {
-        setMockup({ id: snap.id, ...snap.data() } as Mockup);
+    const idStr = shareId as string;
+
+    const resolveMockup = async () => {
+      try {
+        // 1. Try technical ID
+        const snap = await getDoc(doc(db, 'mockups', idStr));
+        if (snap.exists()) {
+          setMockup({ id: snap.id, ...snap.data() } as Mockup);
+          setLoading(false);
+          return;
+        }
+
+        // 2. Try Custom ID (Slug)
+        const q = query(collection(db, 'mockups'), where('idid', '==', idStr));
+        const querySnap = await getDocs(q);
+        if (!querySnap.empty) {
+          const docMatch = querySnap.docs[0];
+          setMockup({ id: docMatch.id, ...docMatch.data() } as Mockup);
+          setLoading(false);
+          return;
+        }
+
+        // 3. Fallback to API if still not found (legacy)
+        fetchMockupFromApi(idStr);
+      } catch (err) {
+        console.error("Viewer resolution error", err);
+        fetchMockupFromApi(idStr);
       }
-      setLoading(false);
-    }).catch(err => {
-      console.error("Viewer load error", err);
-      // Fallback to API if blocked
-      fetchMockupFromApi(shareId as string);
-    });
+    };
+
+    resolveMockup();
   }, [shareId]);
 
   const fetchMockupFromApi = (id: string) => {

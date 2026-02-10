@@ -13,6 +13,7 @@ interface EditorState {
     updateTheme: (theme: Partial<MockupTheme>) => void;
     updateAssets: (assets: Partial<MockupAssets>) => void;
     updatePrompt: (prompt: string) => void;
+    updateIdid: (idid: string) => void;
     addStep: (step: Omit<Step, 'id'>) => void;
     updateStep: (index: number, step: Partial<Step>) => void;
     deleteStep: (index: number) => void;
@@ -113,6 +114,13 @@ export const useEditorStore = create<EditorState>((set, get) => ({
         currentMockup: state.currentMockup ? {
             ...state.currentMockup,
             prompt
+        } : null,
+        isDirty: true
+    })),
+    updateIdid: (idid) => set((state) => ({
+        currentMockup: state.currentMockup ? {
+            ...state.currentMockup,
+            idid
         } : null,
         isDirty: true
     })),
