@@ -14,6 +14,7 @@ export default function ViewerPage() {
 
   // Extract tracking params
   const trackingParams = {
+    idid: searchParams.get('idid'),
     adid: searchParams.get('adid'),
     affid: searchParams.get('affid')
   };

@@ -10,7 +10,7 @@ export const RightPanel: React.FC = () => {
     const { currentMockup, updateTheme, updateAssets, selectedStepIndex, updateStep, setSelectedStep, isDirty, saveMockup } = useEditorStore();
     const [uploading, setUploading] = useState(false);
     const [saving, setSaving] = useState(false);
-    const [adid, setAdid] = useState('');
+    const [idid, setIdid] = useState('');
     const [copied, setCopied] = useState(false);
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, key: 'avatarUrl' | 'backgroundUrl') => {
@@ -77,7 +77,7 @@ export const RightPanel: React.FC = () => {
 
     // ... (rest of logic)
 
-    const embedUrl = `${window.location.origin}/m/${currentMockup.id}${adid ? `?adid=${adid}` : ''}`;
+    const embedUrl = `${window.location.origin}/m/${currentMockup.id}${idid ? `?idid=${idid}` : ''}`;
     const embedCode = `<iframe 
   src="${embedUrl}" 
   width="100%" 
@@ -122,15 +122,15 @@ export const RightPanel: React.FC = () => {
                         <div className={`space-y-4 ${isDirty ? 'opacity-40 pointer-events-none' : ''}`}>
                             <div className="flex flex-col gap-1.5">
                                 <label className="text-[10px] font-extrabold text-purple-900/40 uppercase tracking-widest flex items-center justify-between">
-                                    Ad ID (adid)
+                                    Affiliate / Ad ID (idid)
                                     <span className="text-[9px] font-bold text-purple-400">Optional Tracking</span>
                                 </label>
                                 <div className="relative">
                                     <input
                                         className="w-full p-3 pl-10 text-sm border border-purple-200 rounded-xl bg-white focus:ring-4 focus:ring-purple-500/10 focus:border-purple-500 outline-none transition-all placeholder:text-slate-300"
-                                        placeholder="Enter Ad ID for tracking..."
-                                        value={adid}
-                                        onChange={(e) => setAdid(e.target.value)}
+                                        placeholder="Enter ID for tracking..."
+                                        value={idid}
+                                        onChange={(e) => setIdid(e.target.value)}
                                     />
                                     <Link size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-purple-400" />
                                 </div>

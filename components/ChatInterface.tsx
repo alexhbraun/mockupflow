@@ -90,7 +90,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
     if (!hasStarted.current && onSessionStart) {
       hasStarted.current = true;
-      if (trackingParams?.adid) {
+      if (trackingParams?.idid || trackingParams?.adid) {
         console.log("Tracking params captured:", trackingParams);
       }
       onSessionStart();
