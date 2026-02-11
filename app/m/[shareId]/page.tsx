@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { ChatInterface } from '@/components/ChatInterface';
 import { Mockup } from '@/lib/types';
-import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 export default function ViewerPage() {
@@ -27,7 +27,7 @@ export default function ViewerPage() {
 
     const resolveMockup = async () => {
       try {
-        // 1. Try technical ID
+        // 1. Try technical ID first (direct lookup, no index needed)
         const snap = await getDoc(doc(db, 'mockups', idStr));
         if (snap.exists()) {
           setMockup({ id: snap.id, ...snap.data() } as Mockup);
@@ -35,21 +35,21 @@ export default function ViewerPage() {
           return;
         }
 
-        // 2. Try Custom ID (Slug)
-        const q = query(collection(db, 'mockups'), where('idid', '==', idStr));
-        const querySnap = await getDocs(q);
-        if (!querySnap.empty) {
-          const docMatch = querySnap.docs[0];
-          setMockup({ id: docMatch.id, ...docMatch.data() } as Mockup);
+        // 2. Try API-based slug resolution (avoids Firestore index issues)
+        const apiResponse = await fetch(`/api/resolve/${idStr}`);
+        if (apiResponse.ok) {
+          const mockupData = await apiResponse.json();
+          setMockup(mockupData as Mockup);
           setLoading(false);
           return;
         }
 
-        // 3. Fallback to API if still not found (legacy)
-        fetchMockupFromApi(idStr);
+        // 3. Fallback: not found
+        console.error("Mockup not found for ID or slug:", idStr);
+        setLoading(false);
       } catch (err) {
         console.error("Viewer resolution error", err);
-        fetchMockupFromApi(idStr);
+        setLoading(false);
       }
     };
 
